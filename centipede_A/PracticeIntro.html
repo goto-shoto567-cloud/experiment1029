@@ -1,0 +1,25 @@
+{% extends "global/Page.html" %}
+{% block title %}練習の案内{% endblock %}
+{% block content %}
+
+<div class="card shadow-sm border-0 mt-4">
+  <div class="card-body text-center">
+    <h3 class="fw-bold mb-3">練習問題</h3>
+
+    <p class="lead mb-4">
+      これから <strong>練習問題を2問</strong> 行います。<br>
+      利得表と手番の対応を確認してください。
+    </p>
+
+    <div class="alert alert-secondary" role="alert">
+      <i class="bi bi-lightbulb"></i>
+      この練習は最終利得に反映されません。ルール理解の確認のみを目的としています。
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+      {% next_button %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "global/Page.html" %}
+
+{% block content %}
+  <p>現在 <strong>{{ continued_times }}</strong> 回まで継続中です。</p>
+
+  <div style="margin-top: 1rem;">
+    <button class="otree-btn btn-primary" onclick="document.querySelector('form').submit()">
+      次へ
+    </button>
+  </div>
+
+  <!-- ↓ ここから利得表 -->
+  <div class="table-responsive mt-4">
+    <table class="table table-sm align-middle text-center">
+      <thead>
+        <tr>
+          <th>継続回数 k</th>
+          <th>0</th><th>1</th><th>2</th><th>3</th><th>4</th>
+          <th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10(完走)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>先攻</th>
+          <td>1</td><td>0</td><td>3</td><td>2</td><td>5</td>
+          <td>4</td><td>7</td><td>6</td><td>9</td><td>8</td><td>11</td>
+        </tr>
+        <tr>
+          <th>後攻</th>
+          <td>1</td><td>4</td><td>3</td><td>6</td><td>5</td>
+          <td>8</td><td>7</td><td>10</td><td>9</td><td>12</td><td>11</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

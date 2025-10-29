@@ -1,0 +1,29 @@
+{% extends "global/Page.html" %}
+{% block title %}練習 1{% endblock %}
+{% block content %}
+
+<div class="card shadow-sm border-0 mt-4">
+  <div class="card-body">
+    <h4 class="card-title text-center fw-bold mb-4">練習 1</h4>
+
+    <p class="mb-3 fs-5 text-center">
+      状況：{{ scenario }}（このとき k = <b>{{ k }}</b> で終了）
+    </p>
+
+    <p class="text-center mb-4">
+      あなた（先攻）と相手（後攻）の利得を入力せよ。
+    </p>
+
+    <div class="mx-auto" style="max-width: 400px;">
+      <div class="border rounded p-3 bg-light">
+        {{ formfields }}
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+      {% next_button %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

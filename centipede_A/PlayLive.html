@@ -1,0 +1,125 @@
+{% extends "global/Page.html" %}
+{% block title %}セントピードゲーム（{{ you_are }}）{% endblock %}
+
+{% block content %}
+<h3>あなたは {{ you_are }} である。</h3>
+<p>最大 {{ max_turns }} ターンまで続く。</p>
+
+<div id="status" style="margin-top:10px;">状態を取得中...</div>
+
+<div id="controls" style="margin-top:20px; display:none;">
+  <button id="btnC" class="otree-btn btn-primary" onclick="sendAction('C')">C（継続）</button>
+  <button id="btnS" class="otree-btn btn-danger" onclick="sendAction('S')">S（停止）</button>
+</div>
+
+<script>
+const myRole = js_vars.my_role;
+let currentTurn = js_vars.initial_k;
+let isOver = js_vars.is_over;
+let active = false;
+
+// oTree のページ <form>（自動遷移に使う）
+const form = document.querySelector('form');
+
+function setControlsVisible(v){
+  document.getElementById("controls").style.display = v ? "block" : "none";
+}
+
+/* 初期表示 */
+(function boot(){
+  if (isOver){
+    document.getElementById("status").textContent = `ゲームはすでに終了しています（k=${currentTurn}）。`;
+    setControlsVisible(false);
+    if (form) form.submit(); else liveSend({ _page_forward: true });
+    return;
+  }
+  const expected = (currentTurn % 2 === 0) ? 'P1' : 'P2';
+  if (myRole === expected){
+    active = true;
+    setControlsVisible(true);
+    document.getElementById("status").textContent =
+      `あなたの手番です（C か S を選んでください）。`;
+  } else {
+    active = false;
+    setControlsVisible(false);
+    const jp = (expected === 'P1') ? '先攻' : '後攻';
+    document.getElementById("status").textContent =
+      `相手（${jp}）の行動を待っている…`;
+  }
+})();
+
+/* 送信：現在kを必ず同封。連打防止あり */
+let sending = false;
+function sendAction(action){
+  if (!active || isOver || sending) return;
+  sending = true;
+  active = false;
+  setControlsVisible(false);
+  document.getElementById("status").textContent = "相手の行動を待っている…";
+  liveSend({ action: action, k: currentTurn });
+
+  // 応答喪失の回復（応急）
+  setTimeout(() => { sending = false; }, 4000);
+}
+
+
+function liveRecv(msg){
+  if (!msg) return;
+
+  // {0: payload} または [payload] をアンラップ
+  let data = msg;
+  if (Array.isArray(data)) data = data[0];
+  if (data && typeof data === 'object' && (0 in data)) data = data[0];
+
+  console.log('[recv]', data);
+  sending = false;
+
+  if (data && data.error){
+    alert(data.error);
+    setControlsVisible(false);
+    // サーバ側状態へ強制同期（簡易）
+    location.reload();
+    return;
+  }
+
+  const statusEl = document.getElementById('status');
+  const form = document.querySelector('form');
+
+  if (data && data.event === 'update'){
+    currentTurn = data.k;
+    const next = data.next_turn; // 'P1' or 'P2'
+    const jp = (next === 'P1') ? '先攻' : '後攻';
+    if (statusEl){
+      statusEl.textContent = `ターン ${currentTurn}：次は ${jp} の手番である。`;
+    }
+    const active = (next === myRole);
+    setControlsVisible(!!active);
+    return;
+  }
+
+  if (data && data.event === 'end'){
+    isOver = true;
+    currentTurn = data.k;
+    if (statusEl){
+      statusEl.textContent = `ゲーム終了（k=${data.k}）。P1=${data.p1_pay}，P2=${data.p2_pay}`;
+    }
+    setControlsVisible(false);
+
+    // 次ページへ遷移（oTree公式は form.submit を推奨）
+    if (form) {
+      form.submit();
+    } else {
+      // フォールバック（最悪でもリロード）
+      location.reload();
+    }
+    return;
+  }
+}
+</script>
+{% endblock %}
+
+{% block app_styles %}
+<style>
+  .otree-btn-next { display: none !important; }
+</style>
+{% endblock %}

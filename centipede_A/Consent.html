@@ -1,0 +1,29 @@
+{% extends "global/Page.html" %}
+{% block title %}研究参加への同意{% endblock %}
+{% block content %}
+
+<div class="card shadow-sm border-0 mt-5">
+  <div class="card-body text-center">
+    <h3 class="fw-bold mb-4 text-primary">研究参加への同意</h3>
+
+    <p class="fs-5 mb-3">
+      この実験は意思決定に関する経済実験である。参加は任意であり、途中でやめることもできる。
+    </p>
+
+    <p class="fs-5 mb-4">
+      収集するデータは匿名化して統計的に扱う。参加に同意する場合は
+      <strong>「次へ」</strong> を押してください。
+    </p>
+
+    <div class="alert alert-secondary mt-4" role="alert">
+      <i class="bi bi-shield-check"></i>
+      あなたの回答や行動データは匿名化され、個人が特定されることはありません。
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+      {% next_button %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

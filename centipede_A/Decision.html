@@ -1,0 +1,86 @@
+{% extends "global/Page.html" %}
+
+{% block title %}ラウンド {{ round_no }}（{{ acting }}の手番）{% endblock %}
+
+{% block content %}
+
+  <!-- ラウンド状況 -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+      <p class="mb-1">現在 <strong>{{ continued_times }}</strong> 回まで継続中である。</p>
+      <p class="mb-0">このラウンドは <strong>{{ acting }}</strong> の手番である。</p>
+    </div>
+  </div>
+
+  <!-- 行動選択（どちらを選んでもこのラウンドは終了） -->
+  <div class="d-flex gap-3">
+    <button id="btnC" class="otree-btn btn-primary" name="action" value="C">
+      C（継続）
+    </button>
+    <button id="btnS" class="otree-btn btn-danger" name="action" value="S">
+      S（停止）
+    </button>
+  </div>
+
+  <!-- 二重送信防止＆送信中UI -->
+  <!-- <script>
+    (function(){
+      const btnC = document.getElementById('btnC');
+      const btnS = document.getElementById('btnS');
+      function lockUI(){
+        if (btnC) { btnC.disabled = true; btnC.textContent = '送信中…'; }
+        if (btnS) { btnS.disabled = true; }
+      }
+      if (btnC) btnC.addEventListener('click', lockUI);
+      if (btnS) btnS.addEventListener('click', lockUI);
+    })(); -->
+  <!-- </script> -->
+
+  <script>
+(function(){
+  const btnC = document.getElementById('btnC');
+  const btnS = document.getElementById('btnS');
+
+  function lockUI(){
+    if (btnC) { btnC.disabled = true; btnC.textContent = '送信中…'; }
+    if (btnS) { btnS.disabled = true; }
+  }
+
+  if (btnC) btnC.addEventListener('click', function(){
+    // 送信イベントが先に走るよう 0ms 遅延
+    setTimeout(lockUI, 0);
+  });
+  if (btnS) btnS.addEventListener('click', function(){
+    setTimeout(lockUI, 0);
+  });
+})();
+</script>
+
+
+  <!-- 任意：利得表（学習用に下へ表示したい場合はコメントアウトを外す）
+  <div class="table-responsive mt-4">
+    <table class="table table-sm align-middle text-center">
+      <thead>
+        <tr>
+          <th>継続回数 k</th>
+          <th>0</th><th>1</th><th>2</th><th>3</th><th>4</th>
+          <th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10(完走)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>先攻</th>
+          <td>1</td><td>0</td><td>3</td><td>2</td><td>5</td>
+          <td>4</td><td>7</td><td>6</td><td>9</td><td>8</td><td>11</td>
+        </tr>
+        <tr>
+          <th>後攻</th>
+          <td>1</td><td>4</td><td>3</td><td>6</td><td>5</td>
+          <td>8</td><td>7</td><td>10</td><td>9</td><td>12</td><td>11</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  -->
+
+{% endblock %}

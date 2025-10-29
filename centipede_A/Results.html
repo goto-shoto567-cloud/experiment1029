@@ -1,0 +1,50 @@
+{% extends "global/Page.html" %}
+{% block title %}結果{% endblock %}
+{% block content %}
+
+<div class="card shadow-sm border-0 mt-4">
+  <div class="card-body text-center">
+    <h3 class="fw-bold mb-4 text-success">ラウンド結果</h3>
+
+    {% if round_no < num_rounds %}
+      <p class="fs-5 mb-3">
+        このラウンドが終了しました。継続回数は 
+        <span class="badge bg-primary fs-5">{{ continued_times }}</span> です。
+      </p>
+      <p class="text-muted">次のラウンドに進んでください。</p>
+    {% else %}
+      <p class="fs-5 mb-3 text-danger">
+        全ラウンドが終了しました。継続回数は 
+        <span class="badge bg-primary fs-5">{{ continued_times }}</span> です。
+      </p>
+      <p class="text-muted">これでゲームは終了です。</p>
+    {% endif %}
+
+    <div class="d-flex justify-content-center mb-4">
+      <div class="card bg-light me-3" style="min-width: 200px;">
+        <div class="card-body">
+          <p class="fw-bold mb-1 text-secondary">あなたの利得</p>
+          <p class="display-6 text-dark mb-0">{{ my_pay }}</p>
+        </div>
+      </div>
+      <div class="card bg-light" style="min-width: 200px;">
+        <div class="card-body">
+          <p class="fw-bold mb-1 text-secondary">相手の利得</p>
+          <p class="display-6 text-dark mb-0">{{ opp_pay }}</p>
+        </div>
+      </div>
+    </div>
+
+    {% if round_no < num_rounds %}
+      <div class="mt-4">
+        {% next_button %}
+      </div>
+    {% else %}
+      <div class="mt-4">
+        {% next_button %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "global/Page.html" %}
+{% block title %}練習 2{% endblock %}
+{% block content %}
+<p>状況：{{ scenario }}（このとき k = <b>{{ k }}</b> で終了）</p>
+<p>あなた（先攻）と相手（後攻）の利得を入力せよ。</p>
+{{ formfields }}
+{% next_button %}
+{% endblock %}

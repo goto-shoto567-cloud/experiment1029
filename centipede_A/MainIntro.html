@@ -1,0 +1,25 @@
+{% extends "global/Page.html" %}
+{% block title %}本試行の開始{% endblock %}
+{% block content %}
+
+<div class="card shadow-sm border-0 mt-3">
+  <div class="card-body">
+    <h4 class="card-title mb-3 text-center fw-bold">本試行の開始</h4>
+
+    <p class="lead text-center mb-4">
+      これから本試行を始めます。各ラウンドでは相手が変わります。
+    </p>
+
+    <div class="alert alert-info text-center mt-4" role="alert">
+      <i class="bi bi-info-circle-fill"></i>  
+      各ラウンドで新しい相手とマッチングされます。<br>
+      
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+      {% next_button %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
